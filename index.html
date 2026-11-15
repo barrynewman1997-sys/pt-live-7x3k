@@ -415,7 +415,7 @@ if (hasCard){ $("eyebrow").textContent = `Sportsbook RI · since Oct 11, 2026 ·
 function readStats(sum){
   const byId = {}, byName = {};
   const want = { passing:{passingYards:"passYds", passingTouchdowns:"passTd", "completions/passingAttempts":"passCmp"},  // "19/30" parses to 19
-                 rushing:{rushingYards:"rushYds", rushingTouchdowns:"rushTd"},
+                 rushing:{rushingYards:"rushYds", rushingTouchdowns:"rushTd", rushingAttempts:"rushAtt"},
                  receiving:{receptions:"rec", receivingYards:"recYds", receivingTouchdowns:"recTd"},
                  kickReturns:{kickReturnTouchdowns:"krTd"}, puntReturns:{puntReturnTouchdowns:"prTd"} };
   for (const team of (sum.boxscore?.players||[])){
@@ -426,6 +426,7 @@ function readStats(sum){
         const rec = byId[id] || byName[name] || { name:a.athlete?.displayName, team:team.team?.abbreviation };
         grp.keys.forEach((k,i)=>{ if(map[k]!==undefined) rec[map[k]] = parseFloat(a.stats[i])||0; });
         rec.td = (rec.rushTd||0)+(rec.recTd||0)+(rec.krTd||0)+(rec.prTd||0);
+        rec.passRushYds = (rec.passYds||0)+(rec.rushYds||0);
         if(id) byId[id]=rec; byName[name]=rec;
       });
     }
